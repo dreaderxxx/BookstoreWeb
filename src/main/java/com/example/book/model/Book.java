@@ -1,11 +1,17 @@
 package com.example.book.model;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Book {
+	
 	private String isbn;
 	private String title;
 	private String author;
 	private int price;
 
+	public Book() {}
+	
 	public Book(String isbn, String title, String author, int price) {
 		this.isbn = isbn;
 		this.title = title;

@@ -35,6 +35,7 @@ public class BookEdit1Servlet extends HttpServlet {
 					   "<input type='hidden' name='" + Constants.ISBN + "' value='" + book.getIsbn() + "'/>" +
 				"<input type='submit' value='ok'/>" +
 				"</form>");
+		out.println("<br><a href='details?" + Constants.ISBN + "=" + isbn + "'>Back</a>");
 		out.println("</body>");
 		out.println("</html>");
 	}

@@ -1,36 +1,56 @@
 package com.example.book.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Collection;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+
+@Entity
 public class BookList {
-	private Map<String, Book> books;
+	@Id
+	private int id;
+	@ElementCollection
+	@JoinTable(name="BOOKS")
+	private Collection<Book> books;
 
 	public BookList() {
-		books = new HashMap<String, Book>();
-		books.put("1", new Book("1", "First My Book", "Me", 99));
-		books.put("2", new Book("2", "My Book The Second", "Me", 100));
-		books.put("3", new Book("3", "My Book Third Edition", "Me", 121));
-		books.put("4", new Book("4", " My Book The Best", "Me", 56));
+		books = new ArrayList<Book>();
+	}
+	
+	public BookList(int id) {
+		this();
+		this.id = id;
 	}
 
-	public List<Book> getBooks() {
-		return new ArrayList<Book>(books.values());
+	public Collection<Book> getBooks() {
+		return books;
 	}
 
 	public Book getBook(String isbn) {
-		return books.get(isbn);
+		Book result = null;
+		for (Book book : books) {
+			if (book.getIsbn().equals(isbn)) {
+				result = book;
+				break;
+			}
+		}
+		return result;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder("{");
-		for (Book book : books.values()) {
+		for (Book book : books) {
 			stringBuilder.append(book.toString()).append(",");
 		}
 		stringBuilder.append("}");
 		return stringBuilder.toString();
+	}
+	
+	public void addBook(Book book) {
+		books.add(book);
 	}
 }

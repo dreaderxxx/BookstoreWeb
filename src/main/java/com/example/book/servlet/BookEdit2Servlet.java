@@ -9,7 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import com.example.book.model.Book;
+import com.example.book.model.BookList;
 import com.example.book.model.Constants;
 import com.example.book.web.WebUtil;
 
@@ -28,7 +32,10 @@ public class BookEdit2Servlet extends HttpServlet {
 		String isbn = request.getParameter(Constants.ISBN);
 		String author = request.getParameter(Constants.AUTHOR);
 		String title = request.getParameter(Constants.TITLE);
-		Book book = WebUtil.getBookList(getServletContext()).getBook(isbn);
+		BookList bookList = WebUtil.getBookList(getServletContext());
+		Session session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
+		session.update(bookList);
+		Book book = bookList.getBook(isbn);
 		int price = book.getPrice();
 		String message = "Book successfully edited!";
 		try {
@@ -39,6 +46,12 @@ public class BookEdit2Servlet extends HttpServlet {
 		book.setAuthor(author);
 		book.setTitle(title);
 		book.setPrice(price);
+		
+		session.beginTransaction();
+		session.update(bookList);
+		session.getTransaction().commit();
+		session.close();
+		
 		out.println("<html><body>");
 		out.println(message);
 		printNavigation(out);

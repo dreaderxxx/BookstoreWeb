@@ -26,10 +26,12 @@
         <property name="show_sql">true</property>
 
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">create</property>
+        <property name="hbm2ddl.auto">update</property>
 
         <!-- Names the annotated entity class -->
-        <mapping class="org.hibernate.tutorial.annotations.Event"/>
+        <mapping class="com.example.book.model.Book"/>
+        <mapping class="com.example.book.model.BookList"/>
+        <mapping class="com.example.book.model.User"/>
 
     </session-factory>
 

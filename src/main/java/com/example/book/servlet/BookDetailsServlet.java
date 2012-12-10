@@ -9,7 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import com.example.book.model.Book;
+import com.example.book.model.BookList;
 import com.example.book.model.Constants;
 import com.example.book.web.WebUtil;
 
@@ -31,7 +35,11 @@ public class BookDetailsServlet extends HttpServlet {
 			printNavigation(out);
 			return;
 		}
-		Book book = WebUtil.getBookList(getServletContext()).getBook(isbn);
+		BookList bookList = WebUtil.getBookList(getServletContext());
+		Session session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
+		session.update(bookList);
+		Book book = bookList.getBook(isbn);
+		session.close();
 		if (book == null) {
 			out.println("Book not found!");
 			printNavigation(out);

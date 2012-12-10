@@ -2,6 +2,8 @@ package com.example.book.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -12,7 +14,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import com.example.book.model.Book;
+import com.example.book.model.BookList;
 import com.example.book.model.Constants;
 import com.example.book.model.User;
 import com.example.book.web.VisitorListener;
@@ -29,7 +35,11 @@ public class BookCatalogServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		List<Book> books = WebUtil.getBookList(getServletContext()).getBooks();
+		BookList bookList = WebUtil.getBookList(getServletContext());
+		
+		Session session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
+		session.update(bookList);
+		Collection<Book> books = bookList.getBooks();
 		User user = ((User)request.getSession().getAttribute(Constants.CURR_USER));
 		String login = user != null ? user.getLogin() : null;
 		out.println("<html>");
@@ -44,6 +54,9 @@ public class BookCatalogServlet extends HttpServlet {
 			out.println("<li><a href='details?isbn=" + book.getIsbn() + "'>" + book.getTitle() + "</a>" +
 					"<a href='edit1?isbn=" + book.getIsbn() + "'>   (edit)</a></li>");
 		}
+
+		session.close();
+		
 		out.println("</ul>");
 		out.println("<br><br>Currently online : " + VisitorListener.count + " visitors");
 		out.println("</body>");
@@ -56,8 +69,9 @@ public class BookCatalogServlet extends HttpServlet {
 		doGet(req, resp);
 	}
 
-	private void sortByISBN(List<Book> books) {
-		Collections.sort(books, new Comparator<Book>() {
+	private void sortByISBN(Collection<Book> books) {
+		List<Book> bookList = new ArrayList<Book>(books);
+		Collections.sort(bookList, new Comparator<Book>() {
 
 			@Override
 			public int compare(Book o1, Book o2) {
