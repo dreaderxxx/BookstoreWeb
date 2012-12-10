@@ -48,7 +48,7 @@ public class BookEdit2Servlet extends HttpServlet {
 		book.setPrice(price);
 		
 		session.beginTransaction();
-		session.update(bookList);
+		session.update(book);
 		session.getTransaction().commit();
 		session.close();
 		

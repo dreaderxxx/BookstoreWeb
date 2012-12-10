@@ -17,7 +17,7 @@ public class DatabaseInitialization {
 		Book book1 = new Book("1", "First My Book", "Me", 99);
 		Book book2 = new Book("2", "My Book The Second", "Me", 100);
 		Book book3 = new Book("3", "My Book Third Edition", "Me", 121);
-		Book book4 = new Book("4", " My Book The Best", "Me", 56);
+		Book book4 = new Book("4", "My Book The Best", "Me", 56);
 		
 		BookList bookList = new BookList(1);
 		bookList.addBook(book1);
@@ -37,7 +37,12 @@ public class DatabaseInitialization {
 		SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
+		
 		session.save(bookList);
+		session.save(book1);
+		session.save(book2);
+		session.save(book3);
+		session.save(book4);
 		session.save(user1);
 		session.save(user2);
 

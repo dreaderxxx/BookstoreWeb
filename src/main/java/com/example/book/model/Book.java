@@ -1,10 +1,11 @@
 package com.example.book.model;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-@Embeddable
+@Entity
 public class Book {
-	
+	@Id
 	private String isbn;
 	private String title;
 	private String author;

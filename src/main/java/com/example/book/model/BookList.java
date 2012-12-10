@@ -3,17 +3,19 @@ package com.example.book.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 
 @Entity
 public class BookList {
 	@Id
 	private int id;
-	@ElementCollection
-	@JoinTable(name="BOOKS")
+	@OneToMany
+	@JoinTable(joinColumns=@JoinColumn(name="booklist_id"),
+				inverseJoinColumns=@JoinColumn(name="book_isbn"))
 	private Collection<Book> books;
 
 	public BookList() {

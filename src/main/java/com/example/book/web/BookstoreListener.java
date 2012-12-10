@@ -31,9 +31,8 @@ public class BookstoreListener implements ServletContextListener {
 		SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 		context.setAttribute(Constants.SESSION_FACTORY, sessionFactory);
 		Session session = sessionFactory.openSession();
-		session.beginTransaction();
 		BookList bookList = (BookList) session.get(BookList.class, 1);
-		session.getTransaction().commit();
+		System.out.println(bookList);
 		session.close();
 		context.setAttribute(Constants.BOOK_LIST, bookList);
 	}
