@@ -34,6 +34,7 @@ public class AddToCartServlet extends HttpServlet {
 		ShoppingCart cart;
 		User user = (User) session.getAttribute(Constants.CURR_USER);
 		if (user == null) {
+			((AtomicInteger)getServletContext().getAttribute(Constants.HIT_COUNT)).decrementAndGet();
 			response.sendRedirect("UserLogin.html");
 			return;
 		}

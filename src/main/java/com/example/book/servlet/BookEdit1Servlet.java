@@ -9,7 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import com.example.book.model.Book;
+import com.example.book.model.BookList;
 import com.example.book.model.Constants;
 import com.example.book.web.WebUtil;
 
@@ -23,7 +27,11 @@ public class BookEdit1Servlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String isbn = request.getParameter(Constants.ISBN);
-		Book book = WebUtil.getBookList(getServletContext()).getBook(isbn);
+		BookList bookList = WebUtil.getBookList(getServletContext());
+		Session session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
+		session.update(bookList);
+		Book book = bookList.getBook(isbn);
+		session.close();
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.println("<html>");
