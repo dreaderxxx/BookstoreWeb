@@ -1,4 +1,4 @@
-package com.example.hello;
+package com.example.init;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
