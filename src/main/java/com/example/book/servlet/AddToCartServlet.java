@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import com.example.book.model.Book;
 import com.example.book.model.Constants;
 import com.example.book.model.ShoppingCart;
 import com.example.book.model.User;
-import com.example.book.web.WebUtil;
 
 @WebServlet("/AddToCartServlet")
 public class AddToCartServlet extends HttpServlet {
@@ -29,7 +31,9 @@ public class AddToCartServlet extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String isbn = request.getParameter(Constants.ISBN);
-		Book book = WebUtil.getBookList(getServletContext()).getBook(isbn);
+		Session hibernateSession = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
+		Book book = (Book) hibernateSession.get(Book.class, isbn);
+		hibernateSession.close();
 		HttpSession session = request.getSession();
 		ShoppingCart cart;
 		User user = (User) session.getAttribute(Constants.CURR_USER);

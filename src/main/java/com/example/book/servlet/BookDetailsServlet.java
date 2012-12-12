@@ -13,9 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.example.book.model.Book;
-import com.example.book.model.BookList;
 import com.example.book.model.Constants;
-import com.example.book.web.WebUtil;
 
 @WebServlet("/GetBookServlet")
 public class BookDetailsServlet extends HttpServlet {
@@ -35,10 +33,8 @@ public class BookDetailsServlet extends HttpServlet {
 			printNavigation(out);
 			return;
 		}
-		BookList bookList = WebUtil.getBookList(getServletContext());
 		Session session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
-		session.update(bookList);
-		Book book = bookList.getBook(isbn);
+		Book book = (Book) session.get(Book.class, isbn);
 		session.close();
 		if (book == null) {
 			out.println("Book not found!");

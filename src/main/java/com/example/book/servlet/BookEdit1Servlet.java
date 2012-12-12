@@ -13,9 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.example.book.model.Book;
-import com.example.book.model.BookList;
 import com.example.book.model.Constants;
-import com.example.book.web.WebUtil;
 
 @WebServlet("/BookEdit1Servlet")
 public class BookEdit1Servlet extends HttpServlet {
@@ -27,10 +25,8 @@ public class BookEdit1Servlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String isbn = request.getParameter(Constants.ISBN);
-		BookList bookList = WebUtil.getBookList(getServletContext());
 		Session session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
-		session.update(bookList);
-		Book book = bookList.getBook(isbn);
+		Book book = (Book) session.get(Book.class, isbn);
 		session.close();
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();

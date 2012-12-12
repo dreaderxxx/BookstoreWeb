@@ -13,9 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.example.book.model.Book;
-import com.example.book.model.BookList;
 import com.example.book.model.Constants;
-import com.example.book.web.WebUtil;
 
 @WebServlet("/BookEdit2Servlet")
 public class BookEdit2Servlet extends HttpServlet {
@@ -32,10 +30,9 @@ public class BookEdit2Servlet extends HttpServlet {
 		String isbn = request.getParameter(Constants.ISBN);
 		String author = request.getParameter(Constants.AUTHOR);
 		String title = request.getParameter(Constants.TITLE);
-		BookList bookList = WebUtil.getBookList(getServletContext());
 		Session session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
-		session.update(bookList);
-		Book book = bookList.getBook(isbn);
+		Book book = (Book) session.get(Book.class, isbn);
+		session.close();
 		int price = book.getPrice();
 		String message = "Book successfully edited!";
 		try {
@@ -47,6 +44,7 @@ public class BookEdit2Servlet extends HttpServlet {
 		book.setTitle(title);
 		book.setPrice(price);
 		
+		session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
 		session.beginTransaction();
 		session.update(book);
 		session.getTransaction().commit();
