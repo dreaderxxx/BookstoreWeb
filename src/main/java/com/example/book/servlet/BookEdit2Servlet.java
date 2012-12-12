@@ -31,8 +31,8 @@ public class BookEdit2Servlet extends HttpServlet {
 		String author = request.getParameter(Constants.AUTHOR);
 		String title = request.getParameter(Constants.TITLE);
 		Session session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
+		session.beginTransaction();
 		Book book = (Book) session.get(Book.class, isbn);
-		session.close();
 		int price = book.getPrice();
 		String message = "Book successfully edited!";
 		try {
@@ -44,9 +44,6 @@ public class BookEdit2Servlet extends HttpServlet {
 		book.setTitle(title);
 		book.setPrice(price);
 		
-		session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
-		session.beginTransaction();
-		session.update(book);
 		session.getTransaction().commit();
 		session.close();
 		
