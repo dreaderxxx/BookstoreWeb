@@ -1,10 +1,8 @@
 package com.example.init;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import com.example.book.model.Book;
 import com.example.book.model.BookList;
@@ -28,26 +26,31 @@ public class DatabaseInitialization {
 		User user1 = new User("dima", "dima");
 		User user2 = new User("andrew", "andrew");
 		
-		Configuration configuration = new Configuration().configure();
+//		Configuration configuration = new Configuration().configure();
+//		
+//		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+//				.applySettings(configuration.getProperties())
+//				.buildServiceRegistry();
+//		
+//		SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+//		Session session = sessionFactory.openSession();
+		EntityManagerFactory emf = Persistence
+				.createEntityManagerFactory("hibernate");
+		EntityManager em = emf.createEntityManager();
 		
-		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
-				.applySettings(configuration.getProperties())
-				.buildServiceRegistry();
+		em.getTransaction().begin();
 		
-		SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		
-		session.save(bookList);
-		session.save(book1);
-		session.save(book2);
-		session.save(book3);
-		session.save(book4);
-		session.save(user1);
-		session.save(user2);
+		em.persist(bookList);
+		em.persist(book1);
+		em.persist(book2);
+		em.persist(book3);
+		em.persist(book4);
+		em.persist(user1);
+		em.persist(user2);
 
-		session.getTransaction().commit();
-		session.close();
+		em.getTransaction().commit();
+		em.close();
+		emf.close();
 	}
 
 }

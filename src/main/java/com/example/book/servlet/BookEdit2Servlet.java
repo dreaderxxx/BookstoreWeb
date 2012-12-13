@@ -3,14 +3,12 @@ package com.example.book.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import com.example.book.model.Book;
 import com.example.book.model.Constants;
@@ -30,9 +28,9 @@ public class BookEdit2Servlet extends HttpServlet {
 		String isbn = request.getParameter(Constants.ISBN);
 		String author = request.getParameter(Constants.AUTHOR);
 		String title = request.getParameter(Constants.TITLE);
-		Session session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
-		session.beginTransaction();
-		Book book = (Book) session.get(Book.class, isbn);
+		EntityManager em = ((EntityManager)getServletContext().getAttribute(Constants.ENTITY_MANAGER));
+		em.getTransaction().begin();
+		Book book = (Book) em.find(Book.class, isbn);
 		int price = book.getPrice();
 		String message = "Book successfully edited!";
 		try {
@@ -44,8 +42,7 @@ public class BookEdit2Servlet extends HttpServlet {
 		book.setTitle(title);
 		book.setPrice(price);
 		
-		session.getTransaction().commit();
-		session.close();
+		em.getTransaction().commit();
 		
 		out.println("<html><body>");
 		out.println(message);

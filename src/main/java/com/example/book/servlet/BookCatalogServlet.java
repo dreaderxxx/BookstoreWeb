@@ -8,14 +8,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import com.example.book.model.Book;
 import com.example.book.model.BookList;
@@ -37,8 +35,8 @@ public class BookCatalogServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		BookList bookList = WebUtil.getBookList(getServletContext());
 		
-		Session session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
-		session.update(bookList);
+		EntityManager em = ((EntityManager)getServletContext().getAttribute(Constants.ENTITY_MANAGER));
+		em.refresh(bookList);
 		Collection<Book> books = bookList.getBooks();
 		User user = ((User)request.getSession().getAttribute(Constants.CURR_USER));
 		String login = user != null ? user.getLogin() : null;
@@ -55,8 +53,6 @@ public class BookCatalogServlet extends HttpServlet {
 					"<a href='edit1?isbn=" + book.getIsbn() + "'>   (edit)</a></li>");
 		}
 
-		session.close();
-		
 		out.println("</ul>");
 		out.println("<br><br>Currently online : " + VisitorListener.count + " visitors");
 		out.println("</body>");

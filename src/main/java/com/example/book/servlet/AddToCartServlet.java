@@ -4,15 +4,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import com.example.book.model.Book;
 import com.example.book.model.Constants;
@@ -31,9 +29,8 @@ public class AddToCartServlet extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String isbn = request.getParameter(Constants.ISBN);
-		Session hibernateSession = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
-		Book book = (Book) hibernateSession.get(Book.class, isbn);
-		hibernateSession.close();
+		EntityManager em = ((EntityManager)getServletContext().getAttribute(Constants.ENTITY_MANAGER));
+		Book book = (Book) em.find(Book.class, isbn);
 		HttpSession session = request.getSession();
 		ShoppingCart cart;
 		User user = (User) session.getAttribute(Constants.CURR_USER);

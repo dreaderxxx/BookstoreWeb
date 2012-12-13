@@ -13,5 +13,5 @@ public final class Constants {
 	public static final String PASSWORD = "password";
 	public static final String CURR_USER = "curr user";
 	
-	public static final String SESSION_FACTORY = "session factory";
+	public static final String ENTITY_MANAGER = "entity manager";
 }

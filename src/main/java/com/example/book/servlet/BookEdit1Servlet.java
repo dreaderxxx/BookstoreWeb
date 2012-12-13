@@ -3,14 +3,12 @@ package com.example.book.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import com.example.book.model.Book;
 import com.example.book.model.Constants;
@@ -25,9 +23,8 @@ public class BookEdit1Servlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String isbn = request.getParameter(Constants.ISBN);
-		Session session = ((SessionFactory)getServletContext().getAttribute(Constants.SESSION_FACTORY)).openSession();
-		Book book = (Book) session.get(Book.class, isbn);
-		session.close();
+		EntityManager em = ((EntityManager)getServletContext().getAttribute(Constants.ENTITY_MANAGER));
+		Book book = (Book) em.find(Book.class, isbn);
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.println("<html>");
