@@ -63,7 +63,7 @@
   <listener>
     <listener-class>com.example.book.web.VisitorListener</listener-class>
   </listener>
-  <login-config>
+<!--  <login-config>
       <auth-method>BASIC</auth-method>
       <realm-name>MyRealm</realm-name>
   </login-config>
@@ -80,7 +80,7 @@
     	<role-name>saler</role-name>
   	</auth-constraint>
   </security-constraint>
-
+-->
   <welcome-file-list>
     <welcome-file>UserLogin.html</welcome-file>
   </welcome-file-list>
