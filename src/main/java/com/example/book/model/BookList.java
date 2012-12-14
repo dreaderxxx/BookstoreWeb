@@ -1,5 +1,6 @@
 package com.example.book.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -10,18 +11,29 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
 @Entity
-public class BookList {
+public class BookList implements Serializable {
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setBooks(Collection<Book> books) {
+		this.books = books;
+	}
+
 	@Id
 	private int id;
 	@OneToMany
-	@JoinTable(joinColumns=@JoinColumn(name="booklist_id"),
-				inverseJoinColumns=@JoinColumn(name="book_isbn"))
+	@JoinTable(joinColumns = @JoinColumn(name = "booklist_id"), inverseJoinColumns = @JoinColumn(name = "book_isbn"))
 	private Collection<Book> books;
 
 	public BookList() {
 		books = new ArrayList<Book>();
 	}
-	
+
 	public BookList(int id) {
 		this();
 		this.id = id;
@@ -51,7 +63,7 @@ public class BookList {
 		stringBuilder.append("}");
 		return stringBuilder.toString();
 	}
-	
+
 	public void addBook(Book book) {
 		books.add(book);
 	}

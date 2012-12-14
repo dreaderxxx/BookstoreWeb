@@ -23,6 +23,8 @@ public class BookstoreListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent arg0) {
 		ServletContext context = arg0.getServletContext();
 
+		// example of using hibernate session factory
+		
 		// Configuration configuration = new Configuration().configure();
 		// ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
 		// .applySettings(configuration.getProperties())
@@ -30,6 +32,8 @@ public class BookstoreListener implements ServletContextListener {
 
 		// SessionFactory sessionFactory =
 		// configuration.buildSessionFactory(serviceRegistry);
+		
+		// using JPA EntityManager
 		EntityManagerFactory emf = Persistence
 				.createEntityManagerFactory("hibernate");
 		EntityManager em = emf.createEntityManager();

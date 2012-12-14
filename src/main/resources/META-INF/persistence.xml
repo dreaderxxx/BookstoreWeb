@@ -9,10 +9,10 @@
       <class>com.example.book.model.BookList</class>
       <class>com.example.book.model.User</class>
       <properties>
-	    <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"></property>
-	    <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bookstoredb"></property>
+	    <property name="javax.persistence.jdbc.driver" value="com.google.appengine.api.rdbms.AppEngineDriver"></property>
+	    <property name="javax.persistence.jdbc.url" value="jdbc:google:rdbms://expabookds:bookstoreds/bookstoredb"></property>
 	    <property name="javax.persistence.jdbc.user" value="root"></property>
-	    <property name="javax.persistence.jdbc.password" value="root"></property>
+	    <property name="javax.persistence.jdbc.password" value=""></property>
         <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
         <property name="hibernate.hbm2ddl.auto" value="update"/>
       </properties>

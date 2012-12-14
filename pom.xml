@@ -23,13 +23,13 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.version}</version>
 		</dependency>
-		<!--
+
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-1.0-sdk</artifactId>
 			<version>${gae.version}</version>
 		</dependency>
-		-->
+
     </dependencies>
 	
 	<build>
@@ -65,9 +65,19 @@
                     <groupId>net.kindleit</groupId>
                     <artifactId>gae-runtime</artifactId>
                     <version>${gae.version}</version>
-                        <type>pom</type>
+                    <type>pom</type>
                 </dependency>
             </dependencies>
+			<configuration>
+                <jvmFlags>
+                    <jvmFlag>-Drdbms.server=local</jvmFlag>
+                    <jvmFlag>-Drdbms.driver=com.mysql.jdbc.Driver</jvmFlag>
+                    <jvmFlag>-Drdbms.url=jdbc:mysql://localhost:3306/bookstoredb?user=root&amp;password=root</jvmFlag>
+                </jvmFlags>
+                <serverId>${gae.serverId}</serverId>
+<!--                     <sdkDir>${appengine.sdk.root}</sdkDir> -->
+<!--                     <appDir>${basedir}/war</appDir> -->
+            </configuration>
         </plugin>
 	</plugins>
 	</build>

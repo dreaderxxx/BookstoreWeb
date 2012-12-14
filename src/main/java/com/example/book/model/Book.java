@@ -1,18 +1,21 @@
 package com.example.book.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Book {
+public class Book implements Serializable {
 	@Id
 	private String isbn;
 	private String title;
 	private String author;
 	private int price;
 
-	public Book() {}
-	
+	public Book() {
+	}
+
 	public Book(String isbn, String title, String author, int price) {
 		this.isbn = isbn;
 		this.title = title;
